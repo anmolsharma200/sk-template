@@ -1,0 +1,32 @@
+{
+  "name": "sk-java-micronaut-monolith",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "clean": "node ./scripts/clean.mjs",
+    "prebuild": "npm run clean",
+    "build": "npx tsc -p ./tsconfig.json && npm run copy",
+    "copy": "npx cpx2 \"src/**/*.{ejs,json}\" dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.sarvika.com:superkit/superkit-cli.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "cpx2": "^8.0.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "url": "^0.11.4"
+  },
+  "peerDependencies": {
+    "yeoman-generator": "^7.5.1"
+  }
+}
