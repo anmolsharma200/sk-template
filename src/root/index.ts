@@ -15,8 +15,7 @@ export default class RootGenerator extends Generator {
     answers!: Answers;
 
     async prompting() {
-        this.answers = await this.prompt({
-            prompts: [
+        this.answers = await this.prompt([
                 {
                     type: "input",
                     name: "appPackage",
@@ -33,8 +32,7 @@ export default class RootGenerator extends Generator {
                     message: "Generate a React UI?",
                     default: true,
                 },
-            ],
-        });
+            ]);
     }
 
     async writing() {
