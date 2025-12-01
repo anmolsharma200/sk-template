@@ -5,39 +5,45 @@ import path from "path";
 interface Answers {
     appPackage: string;
     appName: string;
-    generateUI: boolean
+    generateUI: boolean;
 }
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename)
+const __dirname = path.dirname(__filename);
 
 export default class RootGenerator extends Generator {
     answers!: Answers;
 
     async prompting() {
-        const options: any = this.options;
-        
-        const version = options.version || "default";
-        const schemaPath = path.join(__dirname, "templates", version, "schema.json");
-        console.log("schemaPath", schemaPath);
-        const prompts = (await import(schemaPath, {with: {type: "json"}}));
-        console.log("prompts", prompts);
-        
-        this.answers = await this.prompt(prompts.default.prompts)
+        this.answers = await this.prompt({
+            prompts: [
+                {
+                    type: "input",
+                    name: "appPackage",
+                    message: "Application's root package name.",
+                },
+                {
+                    type: "input",
+                    name: "appName",
+                    message: "Application's name.",
+                },
+                {
+                    type: "confirm",
+                    name: "generateUI",
+                    message: "Generate a React UI?",
+                    default: true,
+                },
+            ],
+        });
     }
 
     async writing() {
         const options: any = this.options;
-        
-        const version = options.version || "default";
-        const sourcePath = path.join(__dirname, "templates", version, "files");
+
+        const sourcePath = path.join(__dirname, "templates");
         let destinationPath = options.generatedPath ? options.generatedPath : "./";
-        
+
         console.log("sourcePath", destinationPath);
-        this.fs.copyTpl(
-            sourcePath,
-            destinationPath,
-            this.answers
-        )
+        this.fs.copyTpl(sourcePath, destinationPath, this.answers);
     }
 }
